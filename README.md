@@ -28,6 +28,20 @@ or
 It will try to locate the log file at first by it's full name (you can enter a full path), or by looking for files named `*$1*`, or, if this fails, it
 will try to get the path from `slurmlogpath` (which invokes `scontrol show job $JOBID`).
 
+# Requirements
+
+- gnuplot
+- Slurm (for auto-detection of log path, not needed if you always provide full file paths)
+
+# Requirements that should be installed by default on your distro
+
+- awk
+- sed
+- column
+- grep
+- perl
+- cut
+
 # The output
 
 The output looks like this and refreshes every 10 seconds:
