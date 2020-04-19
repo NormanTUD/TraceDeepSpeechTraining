@@ -20,6 +20,10 @@ function echoheader2 {
         echo -e "\e[4m$1\e[0m"
 }
 
+function echoheader2current {
+    echo -e "\e[5m$1\e[0m (currently running)"
+}
+
 function myavg () {
     OUTPUT="count,ave,median,first,last\n"
     OUTPUT2=$(awk '
@@ -80,10 +84,20 @@ function showlosses {
         OUTFILE=$(slurmlogpath $JOBID)
     fi
 
+    CURRENTLYINTRAINING=$(tail -n1 OUTPUT2 | grep Training 2> /dev/null; echo $?)
+
     echoheader1 "VALIDATION AND TRAINING LOSSES FOR JOB $1 ($OUTFILE)"
-    echoheader2 "Validation:"
+    if [[ $CURRENTLYINTRAINING -eq "0" ]]; then
+        echoheader2current "Validation:"
+    else
+        echoheader2 "Validation:"
+    fi
     validationavg $OUTFILE
-    echoheader2 "Trainingloss:"
+    if [[ $CURRENTLYINTRAINING -eq "1" ]]; then
+        echoheader2current "Trainingloss:"
+    else
+        echoheader2 "Trainingloss:"
+    fi
     traininglossavg $OUTFILE
 }
 
@@ -98,6 +112,5 @@ function tracedeepspeech {
     if [[ ! -f $OUTFILE ]]; then
         OUTFILE=$(slurmlogpath $JOBID)
     fi
-
     while [ 1 ]; do showlosses $OUTFILE; countdown 10; clear; done
 }
