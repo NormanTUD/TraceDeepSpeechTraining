@@ -21,7 +21,7 @@ function echoheader2 {
 }
 
 function echoheader2current {
-    echo -e "\e[5m$1\e[0m (currently running)"
+    echo -e "\e[5m\e[4m$1\e[0m (currently running)"
 }
 
 function myavg () {
