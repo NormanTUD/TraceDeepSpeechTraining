@@ -12,12 +12,16 @@ function countdown() {
     echo
 }
 
-function echoheader {
+function echoheader1 {
+        echo -e "\e[100m\e[4m$1\e[0m"
+}
+
+function echoheader2 {
         echo -e "\e[4m$1\e[0m"
 }
 
 function myavg () {
-    OUTPUT="c,ave,median,first,last\n"
+    OUTPUT="count,ave,median,first,last\n"
     OUTPUT2=$(awk '
       BEGIN {
         c = 0;
@@ -76,15 +80,14 @@ function showlosses {
         OUTFILE=$(slurmlogpath $JOBID)
     fi
 
-    echoheader "VALIDATION AND TRAINING LOSSES FOR JOB $1 ($OUTFILE)"
+    echoheader1 "VALIDATION AND TRAINING LOSSES FOR JOB $1 ($OUTFILE)"
     cat $OUTFILE | grep "HIDDEN="
-    echoheader "Validation:"
+    echoheader2 "Validation:"
     validationavg $OUTFILE
-    echoheader "Trainingloss:"
+    echoheader2 "Trainingloss:"
     traininglossavg $OUTFILE
 }
 
 function tracedeepspeech {
     while [ 1 ]; do showlosses $1; countdown 10; clear; done
 }
-
