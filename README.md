@@ -32,6 +32,7 @@ will try to get the path from `slurmlogpath` (which invokes `scontrol show job $
 
 - gnuplot
 - Slurm (for auto-detection of log path, not needed if you always provide full file paths)
+- uuidgen
 
 # Requirements that should be installed by default on your distro
 
