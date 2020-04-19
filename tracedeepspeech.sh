@@ -84,20 +84,12 @@ function showlosses {
         OUTFILE=$(slurmlogpath $JOBID)
     fi
 
-    CURRENTLYINTRAINING=$(tail -n1 $OUTFILE | grep Training 2> /dev/null; echo $?)
-
     echoheader1 "VALIDATION AND TRAINING LOSSES FOR JOB $1 ($OUTFILE)"
-    if [[ $CURRENTLYINTRAINING -eq "0" ]]; then
-        echoheader2current "Validation:"
-    else
-        echoheader2 "Validation:"
-    fi
+
+    echoheader2 "Validation:"
     validationavg $OUTFILE
-    if [[ $CURRENTLYINTRAINING -eq "1" ]]; then
-        echoheader2current "Trainingloss:"
-    else
-        echoheader2 "Trainingloss:"
-    fi
+
+    echoheader2 "Trainingloss:"
     traininglossavg $OUTFILE
 }
 
