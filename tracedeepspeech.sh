@@ -88,5 +88,16 @@ function showlosses {
 }
 
 function tracedeepspeech {
-    while [ 1 ]; do showlosses $1; countdown 10; clear; done
+    JOBID=$1
+    OUTFILE=$JOBID
+
+    if [[ ! -f $OUTFILE ]]; then
+        OUTFILE=$(ls *$JOBID*)
+    fi
+
+    if [[ ! -f $OUTFILE ]]; then
+        OUTFILE=$(slurmlogpath $JOBID)
+    fi
+
+    while [ 1 ]; do showlosses $OUTFILE; countdown 10; clear; done
 }
