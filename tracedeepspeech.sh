@@ -81,7 +81,6 @@ function showlosses {
     fi
 
     echoheader1 "VALIDATION AND TRAINING LOSSES FOR JOB $1 ($OUTFILE)"
-    cat $OUTFILE | grep "HIDDEN="
     echoheader2 "Validation:"
     validationavg $OUTFILE
     echoheader2 "Trainingloss:"
