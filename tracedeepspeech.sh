@@ -86,9 +86,16 @@ function showlosses {
 
     echoheader1 "VALIDATION AND TRAINING LOSSES FOR JOB $1 ($OUTFILE)"
 
-    cat $OUTFILE | grep "Epoch 1" > /dev/null && cat $OUTFILE | grep "Epoch 0" | grep "Validation" | wc -l | sed -e 's/^/Number of validation steps: /' && cat $OUTFILE | grep "Epoch 0" | grep "Training" | wc -l | sed -e 's/^/Number of training steps: /'
-    cat $OUTFILE | grep "^Epoch " | tail -n1 | perl -e 'while (<>) { s/Epoch\s*(\d+)\s.*/Current Epoch: \1/; print $_ }'
-    cat $OUTFILE | egrep "Training|Validation" | tail -n1 | perl -e 'while (<>) { s/Epoch\s+\d+\s*\|\s*(\w*)\s+.*/Current phase: $1/; print $_ }'
+
+    NUMBEROFVAL=$(cat $OUTFILE | grep "Epoch 1" > /dev/null && cat $OUTFILE | grep "Epoch 0" | grep "Validation" | wc -l || echo "?")
+    NUMBEROFTRAIN=$(cat $OUTFILE | grep "Epoch 1" > /dev/null && cat $OUTFILE | grep "Epoch 0" | grep "Training" | wc -l || echo "?")
+    CURRENTEPOCH=$(cat $OUTFILE | grep "^Epoch " | tail -n1 | perl -e 'while (<>) { s/Epoch\s*(\d+)\s.*/\1/; print $_ }')
+    CURRENTPHASE=$(cat $OUTFILE | egrep "Training|Validation" | tail -n1 | perl -e 'while (<>) { s/Epoch\s+\d+\s*\|\s*(\w*)\s+.*/$1/; print $_ }')
+
+    STATS1="ValidationSteps,TrainingSteps,CurrentEpoch,CurrentPhase"
+    STATS2="$NUMBEROFVAL,$NUMBEROFTRAIN,$CURRENTEPOCH,$CURRENTPHASE"
+
+    echo "$STATS1\n$STATS2" | sed -e 's/^/| /' -e 's/,/,| /g' -e 's/$/,|/' | column -t -s,
 
     echoheader2 "Validation:"
     validationavg $OUTFILE
