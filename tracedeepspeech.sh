@@ -86,6 +86,9 @@ function showlosses {
 
     echoheader1 "VALIDATION AND TRAINING LOSSES FOR JOB $1 ($OUTFILE)"
 
+    cat $OUTFILE | grep "Epoch 1" > /dev/null && cat $OUTFILE | grep "Epoch 0" | grep "Validation" | wc -l | sed -e 's/^/Number of validation steps: /' && cat $OUTFILE | grep "Epoch 0" | grep "Training" | wc -l | sed -e 's/^/Number of training steps: /'
+
+
     echoheader2 "Validation:"
     validationavg $OUTFILE
 
