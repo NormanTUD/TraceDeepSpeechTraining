@@ -52,7 +52,7 @@ function myavg () {
 function dumbgnuplot {
     IMGUUID=$(uuidgen)
     terminal=/dev/pts/1
-    finalrows=$(($LINES/2.56))
+    finalrows=$(($LINES/2.5))
     gnuplot -p -e "set terminal dumb $COLUMNS $finalrows; set autoscale; set style line 1; plot '$1' using 1:2 pt '*'"
 }
 
@@ -87,6 +87,7 @@ function showlosses {
     echoheader1 "VALIDATION AND TRAINING LOSSES FOR JOB $1 ($OUTFILE)"
 
     cat $OUTFILE | grep "Epoch 1" > /dev/null && cat $OUTFILE | grep "Epoch 0" | grep "Validation" | wc -l | sed -e 's/^/Number of validation steps: /' && cat $OUTFILE | grep "Epoch 0" | grep "Training" | wc -l | sed -e 's/^/Number of training steps: /'
+    cat $OUTFILE | grep "^Epoch " | tail -n1 | perl -e 'while (<>) { s/Epoch\s*(\d+)\s.*/Current Epoch: \1/; print $_ }'
 
 
     echoheader2 "Validation:"
