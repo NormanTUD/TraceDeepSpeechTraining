@@ -53,7 +53,7 @@ function dumbgnuplot {
     IMGUUID=$(uuidgen)
     terminal=/dev/pts/1
     finalrows=$(($LINES/2.7))
-    gnuplot -p -e "set terminal dumb $COLUMNS $finalrows; set autoscale; set style line 1; plot '$1' using 1:2 pt '*'"
+    gnuplot -p -e "set terminal dumb $COLUMNS $finalrows; set autoscale; set style line 1; plot '$1' using 1:2 pt '*' notitle"
 }
 
 function validationavg {
